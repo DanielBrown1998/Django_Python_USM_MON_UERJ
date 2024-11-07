@@ -2,22 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Matriculas(models.Model):
-
-    estados = [
-        ('AUSENTE', 'Ausente'),
-        ('PRESENTE', 'Presente'),
-        ('CANCELADA', 'Cancelada')
-    ]
     
     class Meta:
         verbose_name = 'Matrícula'
         verbose_name_plural = 'Matrículas'
 
     matricula = models.CharField(max_length=12, unique=True)
-    status = models.CharField(
-        default='MARCADA', choices=estados, max_length=15
-    )
-
+    status = models.BooleanField(default=False)
 
 
 # Create your models here.
@@ -38,10 +29,18 @@ class DataUser(models.Model):
 
 
 class Monitorias(models.Model):
-    
+
+    estados = [
+        ('AUSENTE', 'Ausente'),
+        ('PRESENTE', 'Presente'),
+        ('CANCELADA', 'Cancelada')
+    ]
+
     date = models.DateField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.BooleanField(default=False)
+    status = models.CharField(
+        default='MARCADA', choices=estados, max_length=15
+    )
  
     class Meta:
         verbose_name_plural = "Monitorias"

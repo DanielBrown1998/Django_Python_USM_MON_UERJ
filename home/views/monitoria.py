@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from home.models import Monitorias, DataUser
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth import get_user
 from home.views import message, monitorias_marcadas_usuario, monitorias_marcadas_monitor
 
@@ -54,6 +55,9 @@ def desmarcar_monitoria(request):
 @login_required(login_url='home:home')
 def update_monitoria(request, id):
     try:
+        monitor = User.objects.get(
+            is_superuser = True
+        )
         monitoria = Monitorias.objects.get(
             id=id
         )
@@ -72,12 +76,12 @@ def update_monitoria(request, id):
 
         status = request.POST.get('status', 'MARCADA')
         monitoria.status = status
-        print(monitoria.status)
         monitoria.save()
         message(request, msg='Monitoria atualizada com sucesso!', sucesss=True)
         return redirect('home:monitorias')
 
     monitoria = {
+            'monitor_name': f"{monitor.first_name}  {monitor.last_name}", 
             "username": monitoria.owner.username,
             "first_name": monitoria.owner.first_name,
             "last_name": monitoria.owner.last_name,

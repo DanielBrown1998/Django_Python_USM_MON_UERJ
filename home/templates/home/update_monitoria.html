@@ -5,7 +5,11 @@
     <form method="POST" action="{% url 'home:update_monitoria' monitoria.id %}"class="flex-column">
         {% csrf_token %}
         <div class="flex-row-space-between item-padding">
-            <label for="matricula" class="font-label">Username:</label>
+            <label for="monitor" class="font-label">Monitor:</label>
+            <input type="text" name="monitor" id="monitor" class="form-cadastro" value="{{monitoria.monitor_name}}" readonly>
+        </div>
+        <div class="flex-row-space-between item-padding">
+            <label for="username" class="font-label">Username:</label>
             <input type="text" name="username" id="username" class="form-cadastro" value="{{monitoria.username}}" readonly>
         </div>
         <div class="flex-row-space-between item-padding">
