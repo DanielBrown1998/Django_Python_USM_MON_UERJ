@@ -7,7 +7,7 @@ from home.models import Monitorias, DataUser
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user
-from home.views import message, monitorias_marcadas_usuario, monitorias_marcadas_monitor
+from home.views import message, monitorias_marcadas_usuario, monitorias_marcadas_monitor, free_days_next_monitorias
 
 @login_required(login_url='home:home')
 def monitoria(request):
@@ -34,22 +34,20 @@ def monitoria(request):
     context = {
         'title': 'Monitoria',
         'data': data,
+        'free_days_next_monitorias': free_days_next_monitorias(),
         'monitorias_marcadas': {
             item for item in monitorias_marcadas_monitor()
             },
     } if user.is_superuser else {
         'title': 'Monitoria',
         'data': data,
+        'free_days_next_monitorias': free_days_next_monitorias(),
         'monitorias_marcadas': {
             item for item in monitorias_marcadas_usuario(user)
             },
     }
     url = 'home/monitorias.html'
     return render(request, url, context=context)
-
-@login_required(login_url='home:home')
-def desmarcar_monitoria(request):
-    ...
 
 
 @login_required(login_url='home:home')

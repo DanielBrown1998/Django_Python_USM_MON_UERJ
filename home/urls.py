@@ -54,9 +54,10 @@ urlpatterns = [
 # 12 - add telefone ao campo de cadastro
 
 # OK 13 - add status ao models Monitorias
-# 14 - add alteração de status para as monitorias do dia e antepassadas
+# OK 14 - add alteração de status para as monitorias do dia e antepassadas
 # 15 - vincular os campos de datauser ao models monitoria
 # 16 - alterar a view update_monitorias para realizar o TODO n° 14
 # 7 - inserir regra de negócio: mais de 3 moonitorias ausentes sem aviso prévio, o usuario será suspenso do sistema
 # 17 - Refatorar o cadastro
 # 18 - Inserir o campo de recuperar senha
+# 19 - add hora ao marcar monitoria

@@ -7,6 +7,9 @@
     {% include "home/partials/menu.html" %}
     <main class="flex-row">
         <section class="conteiner item-padding">
+            <div class="div-padding">
+                {% block monitorias %}{% endblock monitorias %}
+            </div>
             <article class="content div-padding">
                 {% if user.is_authenticated %}
                 <h2 class="item-padding text-center">

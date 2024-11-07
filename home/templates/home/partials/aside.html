@@ -47,8 +47,8 @@
             <p class="legend">Suas Próximas Monitorias:</p>
             <ul class='flex-column padding'>
                 {% for item in monitorias_marcadas %}
-                <li class="flex-row-info item-padding">
-                    <p>data: {{item}}</p>
+                <li class="flex-column item-padding">
+                    <p class="legend">data: {{item.date}}</p>
                 </li>
                 {% endfor %}
             </ul>    
@@ -58,8 +58,19 @@
             <p class="legend">Monitorias Hoje:</p>
             <ul class='flex-column padding'>
                 {% for item in monitorias_marcadas %}
-                <li class="flex-row-info item-padding">
-                    <p>data: {{item}}</p>
+                <li class="flex-column item-padding">
+                    <p class="legend">
+                        data: {{item.date}}
+                    </p>
+                    <p class="legend">
+                        name: {{item.owner.first_name}} {{item.owner.last_name}}
+                    </p>
+                    <p class="legend">
+                        matricula: {{item.owner.username}}
+                    </p>
+                    <p class="legend">
+                        status: {{item.status}}
+                    </p>
                 </li>
                 {% endfor %}
             </ul>    

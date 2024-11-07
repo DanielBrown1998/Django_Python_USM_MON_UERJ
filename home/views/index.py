@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from home.models import Monitorias
 from django.db.models import Q
-
+from itertools import groupby
 daysweek = [
     'Segunda-feira',
     'Terça-feira',
@@ -15,18 +15,41 @@ def monitorias_marcadas_usuario(user):
     import datetime
     from datetime import timedelta, datetime
     data = Monitorias.objects.filter(
-        Q(owner=user) &
-        Q(date__range=(datetime.now(), datetime.now() + timedelta(days=7)))
+        Q(owner=user) & 
+        Q(status__icontains='Marcada') &
+        Q(date__range=(
+            datetime.now(), 
+            datetime.now() + timedelta(days=7)
+            )
+        )
     )
     return data
 
 def monitorias_marcadas_monitor():
     import datetime
-    from datetime import timedelta, datetime 
+    from datetime import datetime 
     data = Monitorias.objects.filter(
-        date__range=(datetime.now(), datetime.now())
+        Q(date__range=(datetime.now(), datetime.now())) &
+        Q(status__icontains='Marcada')
     )
     return data
+
+def free_days_next_monitorias():
+    import datetime
+    from datetime import datetime, timedelta
+    data = Monitorias.objects.filter(
+        Q(date__range=(datetime.now(), datetime.now() + timedelta(days=7))) &
+        Q(status__icontains='Marcada')
+
+        )
+    monitorias = groupby(sorted([
+        {'date': item.date, 'user': item.owner.username} for item in data], key=lambda date: date['date']
+        ), key=lambda date: date['date'])
+    
+    monitorias = [item[0] for item in monitorias if len(list(item[1])) < 5]
+    print(monitorias)
+    return monitorias
+    
 
 def message(request, msg: str, sucesss=False, error=False):
     from django.contrib import messages
