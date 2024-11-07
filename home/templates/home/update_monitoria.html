@@ -19,6 +19,11 @@
         <div class="flex-row-space-between item-padding">
             <label for="status_monitoria">Status:</label>
             <select name="status" id="status_monitoria" class="border-white font-select">
+                <option value="Marcada"
+                    class="font-select text-center"
+                    {% if monitoria.status == "Marcada" %}
+                        selected
+                    {% endif %}>Marcada</option>
                 <option value="Ausente"
                     class="font-select text-center"
                     {% if monitoria.status == "Ausente" %}

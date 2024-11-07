@@ -2,14 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Matriculas(models.Model):
+
+    estados = [
+        ('AUSENTE', 'Ausente'),
+        ('PRESENTE', 'Presente'),
+        ('CANCELADA', 'Cancelada')
+    ]
     
     class Meta:
         verbose_name = 'Matrícula'
         verbose_name_plural = 'Matrículas'
 
     matricula = models.CharField(max_length=12, unique=True)
-    status = models.BooleanField(
-        default=False
+    status = models.CharField(
+        default='MARCADA', choices=estados, max_length=15
     )
 
 

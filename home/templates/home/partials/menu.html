@@ -1,13 +1,13 @@
 {% if user.is_authenticated %}
     <nav class="nav-menu display-stick-top">
         <ul class="menu flex-row">
-            <li class="item-menu"><a href="{% url 'home:home' %}">Home</a></li>
-
+            <li class="item-menu"><a href="{% url 'home:home' %}">Home</a>
+            </li>
             <li class="item-menu">
                 <a href="{% url 'home:monitorias' %}">
                     Monitorias
                 </a>
-            </li>
+            </li>    
             <li class="item-menu">
                 <a href="{% url 'home:update' %}">
                     Update
@@ -24,7 +24,7 @@
                 <a href="{% url 'home:logout' %}">
                     Logout
                 </a>
-            <li>
+            </li>
         </ul>
     </nav>
 {% endif %}

@@ -53,9 +53,29 @@ def desmarcar_monitoria(request):
 
 @login_required(login_url='home:home')
 def update_monitoria(request, id):
-    monitoria = Monitorias.objects.get(
-        id=id
-    )
+    try:
+        monitoria = Monitorias.objects.get(
+            id=id
+        )
+    except monitoria.DoesNotExists:
+        message('Ocorreu um erro!', error=True)
+        return redirect("home:monitorias")
+
+    if request.POST:
+
+        today = datetime.now().date()
+        date = monitoria.date
+        if date > today:
+            message(request, msg='Monitoria ainda não pode ser atualizada')
+            message(request, msg= f"{date} > {today}")
+            return redirect("home:monitorias")
+
+        status = request.POST.get('status', 'MARCADA')
+        monitoria.status = status
+        print(monitoria.status)
+        monitoria.save()
+        message(request, msg='Monitoria atualizada com sucesso!', sucesss=True)
+        return redirect('home:monitorias')
 
     monitoria = {
             "username": monitoria.owner.username,
@@ -63,11 +83,8 @@ def update_monitoria(request, id):
             "last_name": monitoria.owner.last_name,
             "date": monitoria.date,
             "id": monitoria.pk,
-            "status": monitoria.status
+            "status": str(monitoria.status).title()
         }
-
-    if request.POST:
-        ...
     
     context = {
         'title': 'Monitoria',
@@ -127,7 +144,7 @@ def marcar_monitoria(request):
         return redirect('home:monitorias')
     
     try:
-        limit_monitoria = Monitorias.objects.filter(date=date)
+        limit_monitoria = Monitorias.objects.filter(Q(date=date)&Q(status = 'MARCADA'))
     except Monitorias.DoesNotExist:
         limit_monitoria = []
 
