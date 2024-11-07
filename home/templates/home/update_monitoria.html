@@ -1,13 +1,32 @@
 {% extends "home/index.html" %}
 {% block content %}
+<h3 class="item-padding">informativos:</h3>
+<ul class="flex-column item-padding background-blue border-white">
+    <li class="item-menu item-padding">
+        <p class="legend"> Selecione 'Cancelada' para cancelar a monitoria!</p>
+    </li>
+    <li class="item-menu item-padding">
+        <p class="legend">Aqui você verifica o status da monitoria</p>
+    </li>
+    <li class="item-menu item-padding">
+        <p class="legend">Você só pode cancelar a monitoria até 1 dia antes.</p>
+    </li>
+    <li class="item-menu item-padding">
+        <p class="legend">Com três (3) faltas cumulativas, você será suspenso da monitoria
+        </li>
+    </ul>
     <h2 class="item-padding text-center">Detalhes da Monitoria</h2>
-
     <form method="POST" action="{% url 'home:update_monitoria' monitoria.id %}"class="flex-column">
         {% csrf_token %}
         <div class="flex-row-space-between item-padding">
             <label for="monitor" class="font-label">Monitor:</label>
             <input type="text" name="monitor" id="monitor" class="form-cadastro" value="{{monitoria.monitor_name}}" readonly>
         </div>
+        <div class="flex-row-space-between item-padding">
+            <label for="date" class="font-label">Data:</label>
+            <input type="text" name="date" id="date" class="form-cadastro" value="{{monitoria.date}}" readonly>
+        </div>
+        {% if user.is_superuser %}
         <div class="flex-row-space-between item-padding">
             <label for="username" class="font-label">Username:</label>
             <input type="text" name="username" id="username" class="form-cadastro" value="{{monitoria.username}}" readonly>
@@ -17,20 +36,16 @@
             <input type="text" name="name" id="name" class="form-cadastro" value="{{monitoria.first_name}}  {{monitoria.last_name}}" readonly>
         </div>
         <div class="flex-row-space-between item-padding">
-            <label for="date" class="font-label">Data:</label>
-            <input type="text" name="date" id="date" class="form-cadastro" value="{{monitoria.date}}" readonly>
-        </div>
-        <div class="flex-row-space-between item-padding">
             <label for="status_monitoria">Status:</label>
             <select name="status" id="status_monitoria" class="border-white font-select">
                 <option value="Marcada"
-                    class="font-select text-center"
-                    {% if monitoria.status == "Marcada" %}
-                        selected
-                    {% endif %}>Marcada</option>
+                class="font-select text-center"
+                {% if monitoria.status == "Marcada" %}
+                selected
+                {% endif %}>Marcada</option>
                 <option value="Ausente"
-                    class="font-select text-center"
-                    {% if monitoria.status == "Ausente" %}
+                class="font-select text-center"
+                {% if monitoria.status == "Ausente" %}
                         selected
                     {% endif %}>Ausente</option>
                 <option value="Presente"
@@ -41,6 +56,27 @@
                 >Presente</option>
             </select>
         </div>
+        {% else %}
+        <div class="flex-row-space-between item-padding">
+            <label for="status_monitoria">Status:</label>
+            <select name="status" id="status_monitoria" class="border-white font-select">
+                <option value="Marcada"
+                class="font-select text-center"
+                {% if monitoria.status == "Marcada" %}
+                selected
+                {% endif %}>
+                Marcada
+                </option>
+                <option value="Cancelada"
+                class="font-select text-center"
+                {% if monitoria.status == "Cancelada" %}
+                selected
+                {% endif %}>
+                Cancelada
+                </option>
+            </select>
+        </div>
+        {% endif %}
         <button type="submit" class="btn-send">Atualizar</button>
     </form>
 {% endblock %}

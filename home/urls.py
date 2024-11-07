@@ -59,3 +59,4 @@ urlpatterns = [
 # 16 - alterar a view update_monitorias para realizar o TODO n° 14
 # 7 - inserir regra de negócio: mais de 3 moonitorias ausentes sem aviso prévio, o usuario será suspenso do sistema
 # 17 - Refatorar o cadastro
+# 18 - Inserir o campo de recuperar senha

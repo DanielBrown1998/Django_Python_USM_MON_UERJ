@@ -21,7 +21,7 @@ def login(request):
             matricula,
             request.POST
         )
-        if form.is_valid() and form_auth.is_valid():
+        if form_auth.is_valid():
             user = form_auth.get_user()
             auth.login(request, user)
             message(request, 'Login realizado', sucesss=True)
@@ -94,3 +94,4 @@ def logout(request):
     auth.logout(request)
     message(request, 'Logout realizado', sucesss=True)
     return redirect('home:home')
+

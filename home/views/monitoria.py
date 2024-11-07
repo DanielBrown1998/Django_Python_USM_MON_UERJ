@@ -54,6 +54,8 @@ def desmarcar_monitoria(request):
 
 @login_required(login_url='home:home')
 def update_monitoria(request, id):
+    user = get_user(request)
+
     try:
         monitor = User.objects.get(
             is_superuser = True
@@ -69,11 +71,16 @@ def update_monitoria(request, id):
 
         today = datetime.now().date()
         date = monitoria.date
-        if date > today:
-            message(request, msg='Monitoria ainda não pode ser atualizada')
-            message(request, msg= f"{date} > {today}")
-            return redirect("home:monitorias")
-
+        if user.is_superuser:
+            if date > today:
+                message(request, msg='Monitoria ainda não pode ser atualizada')
+                message(request, msg= f"{date} > {today}")
+                return redirect("home:monitorias")
+        else:
+            if today >= date:
+                message(request, msg='Você não pode mais cancelar essa monitoria!', error=True)
+                return redirect('home:monitorias')
+        
         status = request.POST.get('status', 'MARCADA')
         monitoria.status = status
         monitoria.save()
@@ -87,12 +94,17 @@ def update_monitoria(request, id):
             "last_name": monitoria.owner.last_name,
             "date": monitoria.date,
             "id": monitoria.pk,
-            "status": str(monitoria.status).title()
+            "status": str(monitoria.status).title(),
         }
     
     context = {
         'title': 'Monitoria',
         'monitoria': monitoria,
+        "monitorias_marcadas": {
+                item for item in monitorias_marcadas_monitor()
+                } if user.is_superuser else {
+                    item for item in monitorias_marcadas_usuario(user)
+                 }
     }
     url = 'home/update_monitoria.html'
     return render(request, url, context=context)
