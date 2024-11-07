@@ -51,7 +51,12 @@
                     <!--for aqui-->
                     {% for aluno in data %}
                     <tr>
-                        <td>{{aluno.matricula}}</td>
+                        <td>
+                            <a href="{% url "home:update_monitoria" aluno.id %}"
+                            class="a-monitoria">
+                                {{aluno.matricula}}
+                            </a>
+                        </td>
                         <td>{{aluno.nome}}</td>
                         <td>{{aluno.data}}</td>
                         <td>{{aluno.status}}</td>

@@ -13,6 +13,7 @@ urlpatterns = [
 
     path('monitorias/', views.monitoria, name='monitorias'),
     path('monitorias/search/', views.search_monitoria, name='search'),
+    path('monitorias/update/<int:id>/', views.update_monitoria, name='update_monitoria'),
 
     #o usuário pode acessar.
     path('update/', views.update, name='update'),
@@ -48,7 +49,7 @@ urlpatterns = [
 # OK 10 - admin não pode marcar monitoria, alterar o aside, mostrar todas as monitoria marcadas para hoje no aside  
 
 
-# 3 - atualizar o model de DataUser: inserir o atributo monitorias_ausentes
+# OK 3 - atualizar o model de DataUser: inserir o atributo monitorias_ausentes
 # 11 - add telefone ao campo de updates
 # 12 - add telefone ao campo de cadastro
 

@@ -23,7 +23,8 @@ def monitoria(request):
             'matricula': item.owner.username, 
             'nome': f"{item.owner.first_name} {item.owner.last_name}", 
             "data": item.date, 
-            "status": 'OK' if item.status else ' ' } 
+            "status": item.status,
+            "id": item.pk} 
         for item in contacts 
     ]
     paginator = Paginator(data, 10)
@@ -51,9 +52,30 @@ def desmarcar_monitoria(request):
 
 
 @login_required(login_url='home:home')
-def validar_monitoria(request):
-    ...
+def update_monitoria(request, id):
+    monitoria = Monitorias.objects.get(
+        id=id
+    )
 
+    monitoria = {
+            "username": monitoria.owner.username,
+            "first_name": monitoria.owner.first_name,
+            "last_name": monitoria.owner.last_name,
+            "date": monitoria.date,
+            "id": monitoria.pk,
+            "status": monitoria.status
+        }
+
+    if request.POST:
+        ...
+    
+    context = {
+        'title': 'Monitoria',
+        'monitoria': monitoria,
+    }
+    url = 'home/update_monitoria.html'
+    return render(request, url, context=context)
+    
 
 @login_required(login_url='home:home')
 def marcar_monitoria(request):

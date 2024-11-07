@@ -462,7 +462,7 @@ input[type="time"]{
     border-radius: 50%;
     filter: drop-shadow(.2em .1em .5em var(--red));
  }
- .a-rodape{
+ .a-rodape, .a-monitoria{
     color: var(--blue);
     font-weight: 600;
     text-decoration: none;
