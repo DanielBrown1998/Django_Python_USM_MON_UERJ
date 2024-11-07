@@ -1,0 +1,90 @@
+{% extends "home/index.html" %}
+{% block content %}
+<div class="flex-column-space-around">
+    <div class="div-search border-white div-padding">
+        <form action="{% url 'home:search_usuarios' %}" method="get">
+            <input type="text" name="q" id="search" class="form-search item-padding"
+            placeholder="Search" autocomplete="off" value="{{search}}">
+        </form>
+    </div>
+    {% if data %}
+        <table class="table-matricula div-padding">
+            <thead class="table-cabecalho">
+                <tr>
+                    <th>username</th>
+                    <th>name</th>
+                    <th>super</th>
+                    <th>staff</th>
+                    <th>del</th>
+                    <th>status</th>
+                    <th>update</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+                <!--for aqui-->
+                {% for aluno in data %}
+                <tr>
+                    <form action="{% url 'home:update_usuarios' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <td>
+                            <input type="text" class="form-table-large" name="username" value={{aluno.username}}>
+                            </input>
+                        </td>
+                        <td>{{aluno.first_name}} {{aluno.last_name}}</td>
+                        <td>
+                            <input type="checkbox" name="is_superuser"
+                            id='is_superuser' class="form-table"
+                            {% if aluno.is_superuser %} checked {% endif %}>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="is_staff"
+                            id='is_staff' class="form-table"
+                            {% if aluno.is_staff %} checked {% endif %}>
+                            </input>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="delete"
+                            id='delete'class="form-table">
+                            </input>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="is_active"
+                            id='active'class="form-table"
+                            {% if aluno.is_active %} checked {% endif %}>
+                            </input>
+                        </td>
+                        <td><input type="submit" value="&rArr;" class="btn-select"></td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="flex-row">
+            {% if data.has_previous and data.has_next %}
+                <span class="flex-row-space-evenly">
+            {% else %}
+                <span>
+            {% endif %}
+                {% if data.has_previous %}
+                    <a href="?page=1&q={{search}}">&laquo; first</a>
+                    <a href="?page={{ data.previous_page_number }}&q={{search}}" class="next-previous">previous</a>
+                {% endif %}
+    
+                <span class="current">
+                    Page {{ data.number }} of {{ data.paginator.num_pages }}.
+                </span>
+    
+                {% if data.has_next %}
+                    <a href="?page={{ data.next_page_number }}&q={{search}}" class="next-previous">next</a>
+                    <a href="?page={{ data.paginator.num_pages }}&q={{search}}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p class="text-center table-matricula div-padding">Nenhuma monitoria encontrada</p>
+    {% endif%}
+    </div>
+</div>
+{% endblock content %}
+{% block aside %}
+{% endblock aside %}

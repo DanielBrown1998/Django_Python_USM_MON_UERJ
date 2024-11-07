@@ -1,0 +1,30 @@
+{% if user.is_authenticated %}
+    <nav class="nav-menu display-stick-top">
+        <ul class="menu flex-row">
+            <li class="item-menu"><a href="{% url 'home:home' %}">Home</a></li>
+
+            <li class="item-menu">
+                <a href="{% url 'home:monitorias' %}">
+                    Monitorias
+                </a>
+            </li>
+            <li class="item-menu">
+                <a href="{% url 'home:update' %}">
+                    Update
+                </a>
+            </li>
+            {% if user.is_superuser %}
+                <li class="item-menu">
+                    <a href="{% url 'home:config' %}">
+                        Config
+                    </a>
+                </li>
+            {% endif %}
+            <li class="item-menu">
+                <a href="{% url 'home:logout' %}">
+                    Logout
+                </a>
+            <li>
+        </ul>
+    </nav>
+{% endif %}

@@ -1,0 +1,69 @@
+{% load static %}
+{% if not user.is_authenticated %}
+    <aside class="info div-padding">
+        <div class="div-logo flex-row ">
+            <a href="#" target="_blank">
+                <img src="{% static 'home/images/logomarca-uerj.png' %}" alt="logo da uerj" class='logo'>
+            </a>
+        </div>
+        <form action="{% url 'home:login' %}" class=" div-padding flex-column" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="matricula" class="flex-column item-padding">
+                <input type="text" name="matricula" id="matricula" required autocomplete="off" class="form" 
+                placeholder="matrícula"
+                minlength=12
+                maxlength=12>
+            </label>  
+            <p name="info" id="prev_login"class='legend item-padding'>Digite sua matrícula para ir à página de login</p>
+            <div class="item-padding flex-row-space-around">
+                <input type="submit" value="ir" class="btn-send">
+            </div>
+        </form>
+    </aside>
+{% else %}
+<aside class="info div-padding">
+    <div class="div-logo flex-row ">
+        <a href="#" target="_blank">
+            <img src="{% static 'home/images/logomarca-uerj.png' %}" alt="logo da uerj" class='logo'>
+        </a>
+    </div>
+    {% if not user.is_superuser %}
+    <form action="{% url 'home:marcar_monitoria' %}" class=" div-padding flex-column" method="POST" enctype="multipart/form-data">
+        <p class="legend text-center">
+            Marcar Monitoria:
+        </p>
+        {% csrf_token %}
+        <label for="date" class="flex-column item-padding">
+            <input type="date" name="date" id="date" placeholder="Select a date" class="form">
+        </label>
+        <!--<label for="text" class="flex-column item-padding">
+            <textarea name="text" id="text" cols="30" rows="5"placeholder="Digite algo que deseje informar ao monitor...."></textarea>
+        </label>-->
+        <div class="item-padding flex-row-space-around">
+            <input type="submit" value="marcar" class="btn-send">
+        </div>
+    </form>
+        {% if not title == 'HOME' %}
+            <p class="legend">Suas Próximas Monitorias:</p>
+            <ul class='flex-column padding'>
+                {% for item in monitorias_marcadas %}
+                <li class="flex-row-info item-padding">
+                    <p>data: {{item}}</p>
+                </li>
+                {% endfor %}
+            </ul>    
+        {% endif %}
+    {% else %} 
+        {% if not title == 'HOME' %}
+            <p class="legend">Monitorias Hoje:</p>
+            <ul class='flex-column padding'>
+                {% for item in monitorias_marcadas %}
+                <li class="flex-row-info item-padding">
+                    <p>data: {{item}}</p>
+                </li>
+                {% endfor %}
+            </ul>    
+        {% endif %}
+    {% endif %}
+</aside>
+{% endif %}

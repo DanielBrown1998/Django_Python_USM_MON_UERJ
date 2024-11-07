@@ -1,0 +1,119 @@
+{% extends "home/index.html" %}
+{% block content %}
+    <div class="flex-column-space-between">
+        <div class="flex-row">
+            <a href="{% url 'home:matricula' %}"
+            class='btn-select a-rodape item-padding margin'>
+            AUTH</a>
+            <a href="{% url 'home:usuarios' %}"
+            class='btn-select a-rodape item-padding margin'>
+            USERS</a>
+            <a href="{% url 'home:dados' %}"
+            class='btn-select a-rodape item-padding margin'>
+            DADOS</a>
+        </div>
+        <div class="div-search border-white div-padding">
+            <form action="{% url 'home:search_config' %}" method="get">
+                <input type="text" name="q" id="search" class="form-search item-padding"
+                placeholder="Search" autocomplete="off" value="{{search}}">
+            </form>
+        </div>
+        {% if data %}
+            <div class="flex-row overflow-x-auto">
+                <table class="table-matricula div-padding">
+                    <thead class="table-cabecalho">
+                        <tr>
+                            <th>matricula</th>
+                            <th>nome</th>
+                            <th>mark</th>
+                            <th>pres</th>
+                            <th>atualizar</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        <!--for aqui-->
+                        {% for aluno in data %}
+                        <tr>
+                            <form action="{% url 'home:update_monitorias' %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <td>
+                                    <input type="text" class="form-table-large" name="username" value={{aluno.usuario.username}}>
+                                    </input>
+                                </td>
+                                <td>{{aluno.usuario.first_name}} {{aluno.usuario.last_name}}</td>
+                                <td>{{aluno.monitorias_marcadas}}</td>
+                                <td>
+                                    <input type="number" name="monitorias_presentes"
+                                    id='monitorias_marcadas' value="{{aluno.monitorias_presentes}}" class="form-table">
+                                    </input>
+                                </td>
+                                <td><input type="submit" value="&rArr;" class="btn-select"></td>
+                            </form>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex-row">
+                {% if data.has_previous and data.has_next %}
+                    <span class="flex-row-space-evenly">
+                {% else %}
+                    <span>
+                {% endif %}
+                    {% if data.has_previous %}
+                        <a href="?page=1&q={{search}}">&laquo; first</a>
+                        <a href="?page={{ data.previous_page_number }}&q={{search}}" class="next-previous">previous</a>
+                    {% endif %}
+        
+                    <span class="current">
+                        Page {{ data.number }} of {{ data.paginator.num_pages }}.
+                    </span>
+        
+                    {% if data.has_next %}
+                        <a href="?page={{ data.next_page_number }}&q={{search}}" class="next-previous">next</a>
+                        <a href="?page={{ data.paginator.num_pages }}&q={{search}}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% else %}
+            <p class="text-center table-matricula div-padding">Nenhuma monitoria encontrada</p>
+        {% endif%}
+    </div>
+{% endblock content %}
+{% block aside %}
+    <div class="info div-padding">
+        <h2 class="text-center item-padding legend">Dias da semana: </h2>
+        <form action="{% url 'home:update_days' %}" method="post" class="flex-column border-white item-padding" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for day in daysweek %}
+                <label for="{{day}}" class="flex-row-info item-padding">
+                    <p class="legend">{{day}}</p>
+                    {% if day in days %}
+                        <input type="checkbox" name="{{day}}" id="{{day}}" value="{{day}}"checked>
+                    {% else %}
+                        <input type="checkbox" name="{{day}}" value="{{day}}" id="{{day}}">
+                    {% endif %}
+                </label>
+            {% endfor %}
+            <input type="submit" value="definir" class="btn-send">
+        </form>
+        <h2 class="text-center item-padding legend">Horas: </h2>
+        <form action="{% url 'home:update_hours' %}" method="post" class="flex-column border-white item-padding" enctype="multipart/form-data">
+            {% csrf_token %}
+            <select class="hora" name="daysweek" id="daysweek">
+                {% for day in days %}
+                    <option value="{{day}}">
+                        {{day}}
+                    </option>
+                {% endfor %}
+            </select>
+            <div class="flex-row">
+                <input type="time" name="time_start" id="time_start" required>
+                <input type="time" name="time_end" id="time_end" required>
+            </div>
+            <input type="submit" value="definir" class="btn-send">
+        </form>
+    </div>
+{% endblock aside %}
+
+

@@ -1,0 +1,32 @@
+{% extends "home/index.html" %}
+{% load static %}
+{% block aside %}
+<aside class="info div-padding">
+    <div class="div-logo flex-row ">
+        <a href="#" target="_blank">
+            <img src="{% static 'home/images/logomarca-uerj.png' %}" alt="logo da uerj" class='logo'>
+        </a>
+    </div>
+    <div>
+        <form action="{% url 'home:login' %}" 
+        class=" div-padding flex-column" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}" class="flex-column item-padding">
+                    {{ field }}
+                </label>
+                <div class="field-error">
+                    {{field.errors}}
+                </div>
+            {% endfor %}
+            <div class="item-padding flex-row-space-around">
+                <input 
+                type="submit" 
+                value="login" 
+                class="btn-send">
+            </div>
+        </form>
+    </div>
+</aside>
+{% endblock aside %}
+

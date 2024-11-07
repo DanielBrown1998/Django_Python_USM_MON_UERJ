@@ -1,0 +1,90 @@
+{% extends "home/index.html" %}
+{% block content %}
+<div class="flex-column-space-around">
+    <form action="{% url 'home:search' %}" method="GET">
+        <div class="div-search border-white div-padding">
+            <input type="text" name="q" id="search" class="form-search item-padding"
+            placeholder="Search" autocomplete="off" value="{{search}}">
+        </div>
+        <div class="flex-row">
+            <div class="flex-row-space-between">
+                <select name="num_items" id="num-items" 
+                class="border-white font-select">
+                    <option class="font-select text-center" value="5">
+                        <p>5</p>
+                    </option>
+                    <option class="font-select text-center" value="10" selected>
+                        <p>10</p>
+                    </option>
+                    <option class="font-select text-center" value="20">
+                        <p>20</p>
+                    </option>
+                </select>
+                <select name="order_items" id="order_items" 
+                class="border-white font-select">
+                    <option class="font-select text-center" value="date" selected>
+                        <p>Data</p>
+                    </option>
+                    <option class="font-select text-center" value="username">
+                        <p>Matricula</p>
+                    </option>
+                    <option class="font-select text-center" value="first_name">
+                        <p>Nome</p>
+                    </option>
+                </select>
+                <input type="submit" value="&rarr;" class="btn-select">
+            </div>
+        </div>
+    </form>
+    {% if data %}
+        <div class="flex-row overflow-x-auto">
+            <table class="table-matricula div-padding">
+                <thead class="table-cabecalho">
+                    <tr>
+                        <th>matricula</th>
+                        <th>Nome</th>
+                        <th>data</th>
+                        <th>status</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <!--for aqui-->
+                    {% for aluno in data %}
+                    <tr>
+                        <td>{{aluno.matricula}}</td>
+                        <td>{{aluno.nome}}</td>
+                        <td>{{aluno.data}}</td>
+                        <td>{{aluno.status}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="flex-row">
+            {% if data.has_previous and data.has_next %}
+            <span class="flex-row-space-evenly">
+            {% else %}
+            <span>
+                {% endif %}
+                {% if data.has_previous %}
+                <a href="?page=1&q={{search}}">&laquo; first</a>
+                <a href="?page={{ data.previous_page_number }}&q={{search}}" class="next-previous">previous</a>
+                {% endif %}
+                
+                <span class="current">
+                    Page {{ data.number }} of {{ data.paginator.num_pages }}.
+                </span>
+                
+                {% if data.has_next %}
+                <a href="?page={{ data.next_page_number }}&q={{search}}" class="next-previous">next</a>
+                <a href="?page={{ data.paginator.num_pages }}&q={{search}}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p class="text-center table-matricula div-padding">Nenhuma monitoria encontrada</p>
+    {% endif %}
+</div>
+{% endblock content %}
+
+

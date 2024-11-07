@@ -1,0 +1,119 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+    {% include "home/partials/head.html" %}
+<body>
+    {% include "home/partials/menu.html" %}
+    <main class="flex-row">
+        <section class="conteiner item-padding">
+            <article class="content div-padding">
+                {% if user.is_authenticated %}
+                <h2 class="item-padding text-center">
+                    Bem vindo, {{user.first_name}} {{user.last_name}}!!!
+                </h2>
+                {% endif %}                
+                {% if messages %}
+                    {% for msg in messages %}
+                        <div class="messages {{msg.tags}}">
+                            <p>{{msg}}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% block content %}
+                    <div class="flex-column">
+                        <h2 class="item-padding text-center">
+                            MON-Arquitetura de Computadores
+                        </h2>
+                        <p class="item-padding">
+                            Esse site foi criado com o intuito de promover uma melhor interação entre o monitor e o aluno.
+                        </p>
+                        <h3 class="item-padding text-center">
+                            Dias da Monitoria
+                        </h3>
+                        <ul class = "dias-monitorias">
+                            {% for item in horarios %}
+                                <li class="italic item-padding">{{item.dayweek}}: 
+                                    {{item.time_start}} -> {{item.time_final}}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <h3 class="item-padding text-center">Possíveis Dúvidas: </h3>
+                        <dl>
+                            {% if user.is_authenticated %}
+                            <dt class="item-padding">Como posso entrar em contato com o monitor?
+                                <dd>
+                                    <h5 class="dd-style item-padding italic">- Você pode entrar em contato com o monitor através do email: brown.daniel@graduacao.uerj.br ou pelo whatsapp 21-976788321</h5>
+                                </dd>
+                            </dt>
+                            {% endif %}
+                            <dt class="item-padding">Onde posso encontrar o monitor?
+                                <dd class=" dd-style item-padding italic">
+                                    <h5>- Apenas mediante marcação de horário!</h5>
+                                </dd>
+                            </dt>
+                            <dt class="item-padding">
+                                A monitoria é marcada única e exclusivamente por aqui?
+                                <dd class="dd-style item-padding italic"><h5> - Não, poderá ser realizada a marcação através de outras plataformas. Entre em contato com o monitor para mais informações</h5></dd>
+                            </dt>
+                            <dt class="item-padding">
+                                Limite de monitorias por dia:
+                                <dd class="dd-style item-padding italic">
+                                    <h5>- 5 </h5>
+                                </dd>
+                            </dt>
+                            <dt class="item-padding">
+                                Como posso marcar a monitoria por aqui?
+                                <dd class="dd-style item-padding italic">
+                                    <h5>- Digite sua matricula e será direcionado para a página de login, após o login, na aba  onde digitara  a matrícula aparecerá o formulário de marcação, ao marcar será enviado um email de confirmação para o monitor e outro para o seu e-mail cadastrado.</h5>
+                                </dd>
+                            </dt>
+                            <dt class="item-padding">
+                                Não tem login? Tudo bem...
+                                <dd class="dd-style item-padding italic">
+                                    <h5>- Digite sua matricula e será direcionado para a página de cadastro!</h5>
+                                </dd>
+                            </dt>
+                            <dt class="item-padding">
+                                Minha matrícula não consta no banco de dados mesmo que eu esteja inscrito na matéria?
+                                <dd class="dd-style item-padding italic">
+                                    <h5>- Entre em contato com o monitor.</h5>
+                                </dd>
+                            </dt>
+                            <dt>
+                                Teams da monitoria (Link):
+                                <dd class="dd-style item-padding italic div-logo">
+                                    <a href="https://teams.microsoft.com/l/channel/19%3AcfNNsmL2jcySV2pQcXFNw0AucJQwpf2aEBYldqf654I1%40thread.tacv2/General?groupId=8fbaa83a-a71c-4938-bb9c-5079092ec66a&tenantId=59bfed5c-858a-44b3-9dab-762071d723a6" class="flex-row"
+                                    target="_blank">
+                                        <img src="{% static "home/images/teams.png" %}" alt="microsoft teams logo" class="logo-small">
+                                        <h5 class="flex-column">
+                                            Teams
+                                        </h5>
+                                    </a>
+                                </dd>
+                            </dt>
+                            <dt>
+                                <p>Discord da Monitoria (Link):</p>
+                                <dd class="dd-style item-padding italic div-logo">
+                                    <a href="https://discord.gg/T5jRpH6cHB" class="flex-row" target='_blank'>
+                                        <img src="{% static "home/images/discord.png" %}" alt="discord logo" class="logo-small">
+                                        <h5 class="flex-column">
+                                            Discord
+                                        </h5>
+                                    </a>
+                                </dd>
+                            </dt>
+                        </dl>
+                    </div>
+                {% endblock content %}
+            </article>
+            <div class="div-padding">
+                {% block aside %}
+                    {% include "home/partials/aside.html" %}
+                {% endblock aside %}
+            </div>
+        </section>
+    </main>
+    {% include "home/partials/footer.html" %}
+</body>
+</html>
