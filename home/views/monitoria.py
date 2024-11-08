@@ -36,15 +36,10 @@ def monitoria(request):
         'data': data,
         'free_days_next_monitorias': free_days_next_monitorias(),
         'monitorias_marcadas': {
-            item for item in monitorias_marcadas_monitor()
-            },
-    } if user.is_superuser else {
-        'title': 'Monitoria',
-        'data': data,
-        'free_days_next_monitorias': free_days_next_monitorias(),
-        'monitorias_marcadas': {
-            item for item in monitorias_marcadas_usuario(user)
-            },
+                item for item in monitorias_marcadas_monitor()
+                } if user.is_superuser else {
+                    item for item in monitorias_marcadas_usuario(user)
+                }
     }
     url = 'home/monitorias.html'
     return render(request, url, context=context)

@@ -161,7 +161,7 @@ h1, h2, h3 ,h4, h5, h6{
     height: 5vh;
     max-height: 100px;
 }
-.item-menu{
+.item-menu, ul{ 
     list-style: none;
 }
 .item-menu a{
@@ -363,6 +363,15 @@ span a:not(a.next-previous){
     width: 15vw;
     min-width: 150px;
 }
+
+.a-info{
+    text-decoration: none;
+}
+.a-info:hover{
+    color: var(--red);
+    transition: color ease-out 300ms;
+}
+
 .div-logo{
     display: flex;
 }

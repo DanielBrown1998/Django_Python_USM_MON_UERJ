@@ -10,12 +10,11 @@ def cadastro(request):
             request.POST
         )
         if form.is_valid():
-            user = User.objects.get(
-                username=form.cleaned_data['username']
-            )
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password1'])
+            user.save()
             data_user = DataUser(owner=user)
             data_user.save()
-
             matricula = Matriculas.objects.get(
                 matricula=form.cleaned_data['username']
             )

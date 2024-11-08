@@ -1,23 +1,23 @@
 {% extends "home/index.html" %}
 {% block monitorias %}
-<h3> Dias disponíveis para monitoria:</h3>
-<div class="flex-column">
-    <div class="info div-padding">
-        {% for days in free_days_next_monitorias %}
-            <p class="item-padding legend">
-                {{days}}            
+    <aside class="info div-padding">
+        <h3 class="legend"> Dias disponíveis para monitoria:</h3>
+        <div class="flex-column  border-white margin">
+            {% for days in free_days_next_monitorias %}
+                <p class="item-padding legend">
+                    {{days}}
+                </p>
+            {% endfor %}
+        </div>
+        <div class="flex-column div-padding border-white">
+            <p class="error border-white item-padding margin-top-bottom">Atenção:</p>
+            <p class="legend">
+                -> Só é possível marcar monitoria
+                para os próximos 7 dias
+                corridos a partir da presente data.
             </p>
-        {% endfor %}
-    </div>
-    <div class="info div-padding">
-        <p class="error border-white item-padding">Atenção:</p>
-        <p class="item-padding legend">
-            -> Só é possível marcar monitoria 
-            para os próximos 7 dias
-            corridos a partir da presente data.
-        </p>
-    </div>
-</div>
+        </div>
+    </aside>
 {% endblock monitorias %}
 {% block content %}
 <div class="flex-column-space-around">

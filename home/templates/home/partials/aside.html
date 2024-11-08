@@ -29,7 +29,7 @@
     </div>
     {% if not user.is_superuser %}
     <form action="{% url 'home:marcar_monitoria' %}" class=" div-padding flex-column" method="POST" enctype="multipart/form-data">
-        <p class="legend text-center">
+        <p class="legend flex-row item-padding">
             Marcar Monitoria:
         </p>
         {% csrf_token %}
@@ -44,33 +44,36 @@
         </div>
     </form>
         {% if not title == 'HOME' %}
-            <p class="legend">Suas Próximas Monitorias:</p>
+            <p class="legend flex-row item-padding">Suas Próximas Monitorias:</p>
             <ul class='flex-column padding'>
                 {% for item in monitorias_marcadas %}
                 <li class="flex-column item-padding">
-                    <p class="legend">data: {{item.date}}</p>
+                    <p class="legend">{{item.date}}</p>
                 </li>
                 {% endfor %}
             </ul>    
         {% endif %}
     {% else %} 
         {% if not title == 'HOME' %}
-            <p class="legend">Monitorias Hoje:</p>
-            <ul class='flex-column padding'>
+            <p class="legend flex-row item-padding">Monitorias Hoje:</p>
+            <ul class='flex-column'>
                 {% for item in monitorias_marcadas %}
-                <li class="flex-column item-padding">
-                    <p class="legend">
-                        data: {{item.date}}
-                    </p>
-                    <p class="legend">
-                        name: {{item.owner.first_name}} {{item.owner.last_name}}
-                    </p>
-                    <p class="legend">
-                        matricula: {{item.owner.username}}
-                    </p>
-                    <p class="legend">
-                        status: {{item.status}}
-                    </p>
+                <li>
+                    <a href="{% url "home:update_monitoria" item.id %}"
+                    class="flex-column border-white item-padding a-info">
+                        <div class="flex-row-info">
+                            <p class="legend">Nome:</p>
+                            <p class="legend">
+                                {{item.owner.first_name}}
+                            </p>
+                        </div>
+                        <div class="flex-row-info">
+                            <p class="legend">User:</p>
+                             <p class="legend">
+                                {{item.owner.username}}
+                            </p>
+                        </div>
+                    </a>
                 </li>
                 {% endfor %}
             </ul>    
