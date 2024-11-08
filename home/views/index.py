@@ -10,7 +10,6 @@ daysweek = [
     'Sexta-feira',
 ]
 
-
 def monitorias_marcadas_usuario(user):
     import datetime
     from datetime import timedelta, datetime
@@ -50,7 +49,6 @@ def free_days_next_monitorias():
     print(monitorias)
     return monitorias
     
-
 def message(request, msg: str, sucesss=False, error=False):
     from django.contrib import messages
     if sucesss:
@@ -72,7 +70,6 @@ def days():
         weekday[item['day']].append(item['hora'])
     data = [{"dayweek": key, "time_start": str(value[0]), "time_final": str(value[-1])} for key, value in weekday.items()]
     return data
-
 
 def index(request):
 
