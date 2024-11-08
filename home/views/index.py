@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from home.models import Monitorias
+from home.models import Monitorias, Horas
 from django.db.models import Q
 from itertools import groupby
 daysweek = [
@@ -37,7 +37,7 @@ def free_days_next_monitorias():
     import datetime
     from datetime import datetime, timedelta
     data = Monitorias.objects.filter(
-        Q(date__range=(datetime.now(), datetime.now() + timedelta(days=7))) &
+        Q(date__range=(datetime.now() + timedelta(1), datetime.now() + timedelta(days=7))) &
         Q(status__icontains='Marcada')
 
         )
@@ -45,8 +45,11 @@ def free_days_next_monitorias():
         {'date': item.date, 'user': item.owner.username} for item in data], key=lambda date: date['date']
         ), key=lambda date: date['date'])
     
-    monitorias = [item[0] for item in monitorias if len(list(item[1])) < 5]
-    print(monitorias)
+    days_monitoria = [daysweek.index(day['dayweek']) for day in days()]
+    monitorias = [item[0] for item in monitorias 
+                  if len(list(item[1])) < 5 
+                  and item[0].weekday() in days_monitoria
+                  ]
     return monitorias
     
 def message(request, msg: str, sucesss=False, error=False):
@@ -59,7 +62,6 @@ def message(request, msg: str, sucesss=False, error=False):
     return messages.warning(request=request, message=msg)
 
 def days():
-    from home.models import Horas
     horarios = Horas.objects.all()
     weekday = {}
     data = [{"hora": item.time, 'day': item.day.day} for item in horarios]
