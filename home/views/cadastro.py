@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from home.forms.update_create_form import CreateForm
 from home.views import message
-from django.contrib.auth.models import User
 from home.models import DataUser, Matriculas
 def cadastro(request):
 

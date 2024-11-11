@@ -29,7 +29,7 @@
     </div>
     {% if not user.is_superuser %}
     <form action="{% url 'home:marcar_monitoria' %}" class=" div-padding flex-column" method="POST" enctype="multipart/form-data">
-        <p class="legend flex-row item-padding">
+        <p class="legend flex-row item-padding  ">
             Marcar Monitoria:
         </p>
         {% csrf_token %}
@@ -58,7 +58,7 @@
             <p class="legend flex-row item-padding">Monitorias Hoje:</p>
             <ul class='flex-column'>
                 {% for item in monitorias_marcadas %}
-                <li>
+                <li class="item-padding">
                     <a href="{% url "home:update_monitoria" item.id %}"
                     class="flex-column border-white item-padding a-info">
                         <div class="flex-row-info">
